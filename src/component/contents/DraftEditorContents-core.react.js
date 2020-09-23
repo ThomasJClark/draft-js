@@ -156,11 +156,12 @@ class DraftEditorContents extends React.Component<Props> {
       const blockType = block.getType();
 
       const customRenderer = blockRendererFn(block);
-      let CustomComponent, customProps, customEditable;
+      let CustomComponent, customProps, customEditable, customWrapperTemplate;
       if (customRenderer) {
         CustomComponent = customRenderer.component;
         customProps = customRenderer.props;
         customEditable = customRenderer.editable;
+        customWrapperTemplate = customRenderer.wrapper;
       }
 
       const direction = textDirectionality
@@ -185,7 +186,10 @@ class DraftEditorContents extends React.Component<Props> {
 
       const configForType =
         blockRenderMap.get(blockType) || blockRenderMap.get('unstyled');
-      const wrapperTemplate = configForType.wrapper;
+
+      // Allow a wrapper template to be provided for all blocks of this type (from the blockRenderMap), or data-driven
+      // for this particular block (from blockRendererFn)
+      const wrapperTemplate = customWrapperTemplate || configForType.wrapper;
 
       const Element =
         configForType.element || blockRenderMap.get('unstyled').element;

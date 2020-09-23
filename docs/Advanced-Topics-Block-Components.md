@@ -77,6 +77,26 @@ By defining this function within the context of a higher-level component,
 the props for this custom component may be bound to that component, allowing
 instance methods for custom component props.
 
+A wrapper template can also be provided. Contiguous blocks with the same
+wrapper will be rendered with that wrapper as a parent, which can be used for
+adding an outline or background to a group of blocks or applying a grid
+layout.
+
+```js
+const outlineTemplate = <div style={{ border: 'solid 2px #000' }} />;
+
+function myBlockRenderer(contentBlock) {
+  const type = contentBlock.getType();
+  const data = content.getData();
+  if (type === 'atomic' && data.get('withOutline')) {
+    return {
+      component: MyComponent,
+      wrapper: outlineTemplate,
+    };
+  }
+}
+````
+
 ## Defining custom block components
 
 Within `MediaComponent`, the most likely use case is that you will want to
